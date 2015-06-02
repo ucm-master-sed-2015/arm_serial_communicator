@@ -1,0 +1,241 @@
+   1              		.cpu arm7tdmi
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 4
+  10              		.eabi_attribute 18, 4
+  11              		.file	"44blib.c"
+  12              		.global	__aeabi_idiv
+  13              		.text
+  14              		.align	2
+  15              		.global	Delay
+  17              	Delay:
+  18              		@ Function supports interworking.
+  19              		@ args = 0, pretend = 0, frame = 0
+  20              		@ frame_needed = 1, uses_anonymous_args = 0
+  21 0000 0DC0A0E1 		mov	ip, sp
+  22 0004 000050E3 		cmp	r0, #0
+  23 0008 18D82DE9 		stmfd	sp!, {r3, r4, fp, ip, lr, pc}
+  24 000c 04B04CE2 		sub	fp, ip, #4
+  25 0010 1200001A 		bne	.L1
+  26 0014 50409FE5 		ldr	r4, .L5
+  27 0018 193EA0E3 		mov	r3, #400
+  28 001c 003084E5 		str	r3, [r4, #0]
+  29 0020 48209FE5 		ldr	r2, .L5+4
+  30 0024 48309FE5 		ldr	r3, .L5+8
+  31 0028 48109FE5 		ldr	r1, .L5+12
+  32 002c 002083E5 		str	r2, [r3, #0]
+  33 0030 041083E5 		str	r1, [r3, #4]
+  34 0034 081083E5 		str	r1, [r3, #8]
+  35 0038 3C109FE5 		ldr	r1, .L5+16
+  36 003c 001083E5 		str	r1, [r3, #0]
+  37 0040 002083E5 		str	r2, [r3, #0]
+  38 0044 081093E5 		ldr	r1, [r3, #8]
+  39 0048 FF1C61E2 		rsb	r1, r1, #65280
+  40 004c FF1081E2 		add	r1, r1, #255
+  41 0050 28009FE5 		ldr	r0, .L5+20
+  42 0054 0113A0E1 		mov	r1, r1, asl #6
+  43 0058 FEFFFFEB 		bl	__aeabi_idiv
+  44 005c 000084E5 		str	r0, [r4, #0]
+  45              	.L1:
+  46 0060 14D04BE2 		sub	sp, fp, #20
+  47 0064 18689DE8 		ldmfd	sp, {r3, r4, fp, sp, lr}
+  48 0068 1EFF2FE1 		bx	lr
+  49              	.L6:
+  50              		.align	2
+  51              	.L5:
+  52 006c 00000000 		.word	.LANCHOR0
+  53 0070 103F0000 		.word	16144
+  54 0074 0000D301 		.word	30605312
+  55 0078 FFFF0000 		.word	65535
+  56 007c 303F0000 		.word	16176
+  57 0080 00127A00 		.word	8000000
+  59              		.align	2
+  60              		.global	DelayMs
+  62              	DelayMs:
+  63              		@ Function supports interworking.
+  64              		@ args = 0, pretend = 0, frame = 0
+  65              		@ frame_needed = 0, uses_anonymous_args = 0
+  66              		@ link register save eliminated.
+  67 0084 1EFF2FE1 		bx	lr
+  69              		.align	2
+  70              		.global	Port_Init
+  72              	Port_Init:
+  73              		@ Function supports interworking.
+  74              		@ args = 0, pretend = 0, frame = 0
+  75              		@ frame_needed = 0, uses_anonymous_args = 0
+  76              		@ link register save eliminated.
+  77 0088 94309FE5 		ldr	r3, .L9
+  78 008c 94009FE5 		ldr	r0, .L9+4
+  79 0090 94209FE5 		ldr	r2, .L9+8
+  80 0094 000083E5 		str	r0, [r3, #0]
+  81 0098 0C2083E5 		str	r2, [r3, #12]
+  82 009c 632E42E2 		sub	r2, r2, #1584
+  83 00a0 082083E5 		str	r2, [r3, #8]
+  84 00a4 FF2CA0E3 		mov	r2, #65280
+  85 00a8 142083E5 		str	r2, [r3, #20]
+  86 00ac 7C209FE5 		ldr	r2, .L9+12
+  87 00b0 102083E5 		str	r2, [r3, #16]
+  88 00b4 78209FE5 		ldr	r2, .L9+16
+  89 00b8 182083E5 		str	r2, [r3, #24]
+  90 00bc 74209FE5 		ldr	r2, .L9+20
+  91 00c0 FF10A0E3 		mov	r1, #255
+  92 00c4 201083E5 		str	r1, [r3, #32]
+  93 00c8 1C2083E5 		str	r2, [r3, #28]
+  94 00cc 0020A0E3 		mov	r2, #0
+  95 00d0 242083E5 		str	r2, [r3, #36]
+  96 00d4 2C0083E5 		str	r0, [r3, #44]
+  97 00d8 5C009FE5 		ldr	r0, .L9+24
+  98 00dc 280083E5 		str	r0, [r3, #40]
+  99 00e0 0600A0E3 		mov	r0, #6
+ 100 00e4 300083E5 		str	r0, [r3, #48]
+ 101 00e8 50009FE5 		ldr	r0, .L9+28
+ 102 00ec 382083E5 		str	r2, [r3, #56]
+ 103 00f0 340083E5 		str	r0, [r3, #52]
+ 104 00f4 3C2083E5 		str	r2, [r3, #60]
+ 105 00f8 441083E5 		str	r1, [r3, #68]
+ 106 00fc FF1C81E2 		add	r1, r1, #65280
+ 107 0100 401083E5 		str	r1, [r3, #64]
+ 108 0104 38009FE5 		ldr	r0, .L9+32
+ 109 0108 0710A0E3 		mov	r1, #7
+ 110 010c 482083E5 		str	r2, [r3, #72]
+ 111 0110 4C1083E5 		str	r1, [r3, #76]
+ 112 0114 0715A0E3 		mov	r1, #29360128
+ 113 0118 040081E5 		str	r0, [r1, #4]
+ 114 011c 502083E5 		str	r2, [r3, #80]
+ 115 0120 1EFF2FE1 		bx	lr
+ 116              	.L10:
+ 117              		.align	2
+ 118              	.L9:
+ 119 0124 0000D201 		.word	30539776
+ 120 0128 FF010000 		.word	511
+ 121 012c FF070000 		.word	2047
+ 122 0130 FFFFF00F 		.word	267452415
+ 123 0134 FF300000 		.word	12543
+ 124 0138 AAAA0000 		.word	43690
+ 125 013c 29550200 		.word	152873
+ 126 0140 2A250000 		.word	9514
+ 127 0144 002000C0 		.word	-1073733632
+ 129              		.align	2
+ 130              		.global	malloc
+ 132              	malloc:
+ 133              		@ Function supports interworking.
+ 134              		@ args = 0, pretend = 0, frame = 0
+ 135              		@ frame_needed = 0, uses_anonymous_args = 0
+ 136              		@ link register save eliminated.
+ 137 0148 2C209FE5 		ldr	r2, .L13
+ 138 014c 031010E2 		ands	r1, r0, #3
+ 139 0150 043092E5 		ldr	r3, [r2, #4]
+ 140 0154 0110A013 		movne	r1, #1
+ 141 0158 201181E0 		add	r1, r1, r0, lsr #2
+ 142 015c 1C009FE5 		ldr	r0, .L13+4
+ 143 0160 011183E0 		add	r1, r3, r1, asl #2
+ 144 0164 000051E1 		cmp	r1, r0
+ 145 0168 041082E5 		str	r1, [r2, #4]
+ 146 016c 043082C5 		strgt	r3, [r2, #4]
+ 147 0170 0030A0C3 		movgt	r3, #0
+ 148 0174 0300A0E1 		mov	r0, r3
+ 149 0178 1EFF2FE1 		bx	lr
+ 150              	.L14:
+ 151              		.align	2
+ 152              	.L13:
+ 153 017c 00000000 		.word	.LANCHOR0
+ 154 0180 00F07F0C 		.word	209711104
+ 156              		.align	2
+ 157              		.global	free
+ 159              	free:
+ 160              		@ Function supports interworking.
+ 161              		@ args = 0, pretend = 0, frame = 0
+ 162              		@ frame_needed = 0, uses_anonymous_args = 0
+ 163              		@ link register save eliminated.
+ 164 0184 04309FE5 		ldr	r3, .L16
+ 165 0188 040083E5 		str	r0, [r3, #4]
+ 166 018c 1EFF2FE1 		bx	lr
+ 167              	.L17:
+ 168              		.align	2
+ 169              	.L16:
+ 170 0190 00000000 		.word	.LANCHOR0
+ 172              		.align	2
+ 173              		.global	sys_init
+ 175              	sys_init:
+ 176              		@ Function supports interworking.
+ 177              		@ args = 0, pretend = 0, frame = 0
+ 178              		@ frame_needed = 1, uses_anonymous_args = 0
+ 179 0194 0DC0A0E1 		mov	ip, sp
+ 180 0198 30D82DE9 		stmfd	sp!, {r4, r5, fp, ip, lr, pc}
+ 181 019c 0130A0E3 		mov	r3, #1
+ 182 01a0 1E46A0E3 		mov	r4, #31457280
+ 183 01a4 0050A0E3 		mov	r5, #0
+ 184 01a8 085084E5 		str	r5, [r4, #8]
+ 185 01ac 003084E5 		str	r3, [r4, #0]
+ 186 01b0 0030E0E3 		mvn	r3, #0
+ 187 01b4 243084E5 		str	r3, [r4, #36]
+ 188 01b8 28309FE5 		ldr	r3, .L19
+ 189 01bc 0F20A0E3 		mov	r2, #15
+ 190 01c0 542083E5 		str	r2, [r3, #84]
+ 191 01c4 04B04CE2 		sub	fp, ip, #4
+ 192 01c8 FEFFFFEB 		bl	Port_Init
+ 193 01cc 0500A0E1 		mov	r0, r5
+ 194 01d0 FEFFFFEB 		bl	Delay
+ 195 01d4 0133E0E3 		mvn	r3, #67108864
+ 196 01d8 0C3084E5 		str	r3, [r4, #12]
+ 197 01dc 14D04BE2 		sub	sp, fp, #20
+ 198 01e0 30689DE8 		ldmfd	sp, {r4, r5, fp, sp, lr}
+ 199 01e4 1EFF2FE1 		bx	lr
+ 200              	.L20:
+ 201              		.align	2
+ 202              	.L19:
+ 203 01e8 0000D201 		.word	30539776
+ 205              		.global	mallocPt
+ 206              		.global	restart
+ 207              		.global	run
+ 208              		.comm	downPt,4,4
+ 209              		.comm	fileSize,4,4
+ 210              		.data
+ 211              		.align	2
+ 212              		.set	.LANCHOR0,. + 0
+ 215              	delayLoopCount:
+ 216 0000 90010000 		.word	400
+ 219              	mallocPt:
+ 220 0004 00000000 		.word	Image_RW_Limit
+ 223              	run:
+ 224 0008 0000000C 		.word	201326592
+ 225              		.bss
+ 226              		.align	2
+ 229              	restart:
+ 230 0000 00000000 		.space	4
+ 231              		.ident	"GCC: (Sourcery G++ Lite 2011.03-42) 4.5.2"
+DEFINED SYMBOLS
+                            *ABS*:00000000 44blib.c
+C:\Users\USUARI~1\AppData\Local\Temp\ccwwxa3e.s:14     .text:00000000 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccwwxa3e.s:17     .text:00000000 Delay
+C:\Users\USUARI~1\AppData\Local\Temp\ccwwxa3e.s:52     .text:0000006c $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccwwxa3e.s:59     .text:00000084 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccwwxa3e.s:62     .text:00000084 DelayMs
+C:\Users\USUARI~1\AppData\Local\Temp\ccwwxa3e.s:72     .text:00000088 Port_Init
+C:\Users\USUARI~1\AppData\Local\Temp\ccwwxa3e.s:119    .text:00000124 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccwwxa3e.s:129    .text:00000148 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccwwxa3e.s:132    .text:00000148 malloc
+C:\Users\USUARI~1\AppData\Local\Temp\ccwwxa3e.s:153    .text:0000017c $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccwwxa3e.s:156    .text:00000184 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccwwxa3e.s:159    .text:00000184 free
+C:\Users\USUARI~1\AppData\Local\Temp\ccwwxa3e.s:170    .text:00000190 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccwwxa3e.s:172    .text:00000194 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccwwxa3e.s:175    .text:00000194 sys_init
+C:\Users\USUARI~1\AppData\Local\Temp\ccwwxa3e.s:203    .text:000001e8 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccwwxa3e.s:219    .data:00000004 mallocPt
+C:\Users\USUARI~1\AppData\Local\Temp\ccwwxa3e.s:229    .bss:00000000 restart
+C:\Users\USUARI~1\AppData\Local\Temp\ccwwxa3e.s:223    .data:00000008 run
+                            *COM*:00000004 downPt
+                            *COM*:00000004 fileSize
+C:\Users\USUARI~1\AppData\Local\Temp\ccwwxa3e.s:211    .data:00000000 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccwwxa3e.s:215    .data:00000000 delayLoopCount
+C:\Users\USUARI~1\AppData\Local\Temp\ccwwxa3e.s:226    .bss:00000000 $d
+
+UNDEFINED SYMBOLS
+__aeabi_idiv
+Image_RW_Limit

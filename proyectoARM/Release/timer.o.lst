@@ -1,0 +1,102 @@
+   1              		.cpu arm7tdmi
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 4
+  10              		.eabi_attribute 18, 4
+  11              		.file	"timer.c"
+  12              		.text
+  13              		.align	2
+  14              		.global	timer_ISR
+  16              	timer_ISR:
+  17              		@ Interrupt Service Routine.
+  18              		@ args = 0, pretend = 0, frame = 0
+  19              		@ frame_needed = 0, uses_anonymous_args = 0
+  20              		@ link register save eliminated.
+  21 0000 0C002DE9 		stmfd	sp!, {r2, r3}
+  22 0004 1C309FE5 		ldr	r3, .L2
+  23 0008 002093E5 		ldr	r2, [r3, #0]
+  24 000c 012082E2 		add	r2, r2, #1
+  25 0010 002083E5 		str	r2, [r3, #0]
+  26 0014 022AA0E3 		mov	r2, #8192
+  27 0018 1E36A0E3 		mov	r3, #31457280
+  28 001c 242083E5 		str	r2, [r3, #36]
+  29 0020 0C00BDE8 		ldmfd	sp!, {r2, r3}
+  30 0024 04F05EE2 		subs	pc, lr, #4
+  31              	.L3:
+  32              		.align	2
+  33              	.L2:
+  34 0028 00000000 		.word	.LANCHOR0
+  36              		.align	2
+  37              		.global	timer_init
+  39              	timer_init:
+  40              		@ Function supports interworking.
+  41              		@ args = 0, pretend = 0, frame = 0
+  42              		@ frame_needed = 0, uses_anonymous_args = 0
+  43              		@ link register save eliminated.
+  44 002c 1E36A0E3 		mov	r3, #31457280
+  45 0030 0020A0E3 		mov	r2, #0
+  46 0034 082083E5 		str	r2, [r3, #8]
+  47 0038 012082E2 		add	r2, r2, #1
+  48 003c 002083E5 		str	r2, [r3, #0]
+  49 0040 0C2093E5 		ldr	r2, [r3, #12]
+  50 0044 0123C2E3 		bic	r2, r2, #67108864
+  51 0048 022AC2E3 		bic	r2, r2, #8192
+  52 004c 0C2083E5 		str	r2, [r3, #12]
+  53 0050 64209FE5 		ldr	r2, .L5
+  54 0054 64309FE5 		ldr	r3, .L5+4
+  55 0058 AB2003E5 		str	r2, [r3, #-171]
+  56 005c 60309FE5 		ldr	r3, .L5+8
+  57 0060 FF20A0E3 		mov	r2, #255
+  58 0064 002083E5 		str	r2, [r3, #0]
+  59 0068 042093E5 		ldr	r2, [r3, #4]
+  60 006c FF24C2E3 		bic	r2, r2, #-16777216
+  61 0070 0F20C2E3 		bic	r2, r2, #15
+  62 0074 042083E5 		str	r2, [r3, #4]
+  63 0078 48209FE5 		ldr	r2, .L5+12
+  64 007c 0C2083E5 		str	r2, [r3, #12]
+  65 0080 322CA0E3 		mov	r2, #12800
+  66 0084 102083E5 		str	r2, [r3, #16]
+  67 0088 082093E5 		ldr	r2, [r3, #8]
+  68 008c 022082E3 		orr	r2, r2, #2
+  69 0090 082083E5 		str	r2, [r3, #8]
+  70 0094 082093E5 		ldr	r2, [r3, #8]
+  71 0098 0220C2E3 		bic	r2, r2, #2
+  72 009c 082083E5 		str	r2, [r3, #8]
+  73 00a0 082093E5 		ldr	r2, [r3, #8]
+  74 00a4 082082E3 		orr	r2, r2, #8
+  75 00a8 082083E5 		str	r2, [r3, #8]
+  76 00ac 082093E5 		ldr	r2, [r3, #8]
+  77 00b0 012082E3 		orr	r2, r2, #1
+  78 00b4 082083E5 		str	r2, [r3, #8]
+  79 00b8 1EFF2FE1 		bx	lr
+  80              	.L6:
+  81              		.align	2
+  82              	.L5:
+  83 00bc 00000000 		.word	timer_ISR
+  84 00c0 FFFF7F0C 		.word	209715199
+  85 00c4 0000D501 		.word	30736384
+  86 00c8 FFFF0000 		.word	65535
+  88              		.global	semilla
+  89              		.bss
+  90              		.align	2
+  91              		.set	.LANCHOR0,. + 0
+  94              	semilla:
+  95 0000 00000000 		.space	4
+  96              		.ident	"GCC: (Sourcery G++ Lite 2011.03-42) 4.5.2"
+DEFINED SYMBOLS
+                            *ABS*:00000000 timer.c
+C:\Users\USUARI~1\AppData\Local\Temp\ccmnV3gY.s:13     .text:00000000 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccmnV3gY.s:16     .text:00000000 timer_ISR
+C:\Users\USUARI~1\AppData\Local\Temp\ccmnV3gY.s:34     .text:00000028 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccmnV3gY.s:36     .text:0000002c $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccmnV3gY.s:39     .text:0000002c timer_init
+C:\Users\USUARI~1\AppData\Local\Temp\ccmnV3gY.s:83     .text:000000bc $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccmnV3gY.s:94     .bss:00000000 semilla
+C:\Users\USUARI~1\AppData\Local\Temp\ccmnV3gY.s:90     .bss:00000000 $d
+
+NO UNDEFINED SYMBOLS

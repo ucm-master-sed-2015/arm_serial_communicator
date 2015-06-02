@@ -1,0 +1,710 @@
+   1              		.cpu arm7tdmi
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 6
+  10              		.eabi_attribute 18, 4
+  11              		.file	"main.c"
+  21              	.Ltext0:
+  22              		.file 1 "../main.c"
+ 2658              		.align	2
+ 2659              	.LC0:
+ 2660 0000 00       		.ascii	"\000"
+ 2661 0001 000000   		.align	2
+ 2662              	.LC1:
+ 2663 0004 4F555442 		.ascii	"OUTBOX\000"
+ 2663      4F5800
+ 2664 000b 00       		.align	2
+ 2665              	.LC2:
+ 2666 000c 494E424F 		.ascii	"INBOX\000"
+ 2666      5800
+ 2667              		.text
+ 2668              		.align	2
+ 2669              		.global	main
+ 2671              	main:
+ 2672              	.LFB0:
+   1:../main.c     **** /*--- ficheros de cabecera ---*/
+   2:../main.c     **** #include "44blib.h"
+   3:../main.c     **** #include "44b.h"
+   4:../main.c     **** #include "uart.h"
+   5:../main.c     **** #include "lcd.h"
+   6:../main.c     **** 
+   7:../main.c     **** extern int identifier;
+   8:../main.c     **** 
+   9:../main.c     **** /*--- declaracion de funciones ---*/
+  10:../main.c     **** int main(void);
+  11:../main.c     **** 
+  12:../main.c     **** /*--- variables globales ---*/
+  13:../main.c     **** 
+  14:../main.c     **** /*--- codigo de la funcion ---*/
+  15:../main.c     **** int main(void) {
+ 2673              		.loc 1 15 0
+ 2674              		.cfi_startproc
+ 2675              		@ Function supports interworking.
+ 2676              		@ args = 0, pretend = 0, frame = 72
+ 2677              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2678 0000 0DC0A0E1 		mov	ip, sp
+ 2679              	.LCFI0:
+ 2680              		.cfi_def_cfa_register 12
+ 2681 0004 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+ 2682 0008 04B04CE2 		sub	fp, ip, #4
+ 2683              		.cfi_offset 14, -8
+ 2684              		.cfi_offset 13, -12
+ 2685              		.cfi_offset 11, -16
+ 2686              	.LCFI1:
+ 2687              		.cfi_def_cfa 11, 4
+ 2688 000c 50D04DE2 		sub	sp, sp, #80
+  16:../main.c     **** 
+  17:../main.c     **** 	identifier = 0;
+ 2689              		.loc 1 17 0
+ 2690 0010 00319FE5 		ldr	r3, .L5
+ 2691 0014 0020A0E3 		mov	r2, #0
+ 2692 0018 002083E5 		str	r2, [r3, #0]
+  18:../main.c     **** 
+  19:../main.c     **** 	sys_init(); // inicializacion de la placa, interrupciones, puertos
+ 2693              		.loc 1 19 0
+ 2694 001c FEFFFFEB 		bl	sys_init
+  20:../main.c     **** 	Eint4567_init(); // inicializacion de los botones
+ 2695              		.loc 1 20 0
+ 2696 0020 FEFFFFEB 		bl	Eint4567_init
+  21:../main.c     **** 	lcd_init();
+ 2697              		.loc 1 21 0
+ 2698 0024 FEFFFFEB 		bl	lcd_init
+  22:../main.c     **** 	keyboard_init();
+ 2699              		.loc 1 22 0
+ 2700 0028 FEFFFFEB 		bl	keyboard_init
+  23:../main.c     **** 	Uart_Init(115200); // inicializacion de la Uart
+ 2701              		.loc 1 23 0
+ 2702 002c E8009FE5 		ldr	r0, .L5+4
+ 2703 0030 FEFFFFEB 		bl	Uart_Init
+  24:../main.c     **** 	Uart_Config(); // configuración de interrupciones y buffers
+ 2704              		.loc 1 24 0
+ 2705 0034 FEFFFFEB 		bl	Uart_Config
+  25:../main.c     **** 
+  26:../main.c     **** 	// Por ahora este main espera que le llegue un entero por el serie
+  27:../main.c     **** 	// y cuando le llega hace un led switch
+  28:../main.c     **** 
+  29:../main.c     **** 	D8Led_symbol(0);
+ 2706              		.loc 1 29 0
+ 2707 0038 0000A0E3 		mov	r0, #0
+ 2708 003c FEFFFFEB 		bl	D8Led_symbol
+  30:../main.c     **** 
+  31:../main.c     **** 	char* mensajeRecibido = "";
+ 2709              		.loc 1 31 0
+ 2710 0040 D8309FE5 		ldr	r3, .L5+8
+ 2711 0044 14300BE5 		str	r3, [fp, #-20]
+  32:../main.c     **** 	char c[60];
+  33:../main.c     **** 	int numeroLeido = 0;
+ 2712              		.loc 1 33 0
+ 2713 0048 0030A0E3 		mov	r3, #0
+ 2714 004c 18300BE5 		str	r3, [fp, #-24]
+  34:../main.c     **** 
+  35:../main.c     **** 	lcd_on();
+ 2715              		.loc 1 35 0
+ 2716 0050 FEFFFFEB 		bl	lcd_on
+  36:../main.c     **** 
+  37:../main.c     **** 	lcd_draw_vline( 240, 0, 150, BLACK, 4);
+ 2717              		.loc 1 37 0
+ 2718 0054 0430A0E3 		mov	r3, #4
+ 2719 0058 00308DE5 		str	r3, [sp, #0]
+ 2720 005c F000A0E3 		mov	r0, #240
+ 2721 0060 0010A0E3 		mov	r1, #0
+ 2722 0064 9620A0E3 		mov	r2, #150
+ 2723 0068 0F30A0E3 		mov	r3, #15
+ 2724 006c FEFFFFEB 		bl	lcd_draw_vline
+  38:../main.c     **** 
+  39:../main.c     **** 	lcd_printf(40, 16, BLACK, "OUTBOX");
+ 2725              		.loc 1 39 0
+ 2726 0070 2800A0E3 		mov	r0, #40
+ 2727 0074 1010A0E3 		mov	r1, #16
+ 2728 0078 0F20A0E3 		mov	r2, #15
+ 2729 007c A0309FE5 		ldr	r3, .L5+12
+ 2730 0080 FEFFFFEB 		bl	lcd_printf
+  40:../main.c     **** 
+  41:../main.c     **** 	lcd_printf(210, 16, BLACK, "INBOX");
+ 2731              		.loc 1 41 0
+ 2732 0084 D200A0E3 		mov	r0, #210
+ 2733 0088 1010A0E3 		mov	r1, #16
+ 2734 008c 0F20A0E3 		mov	r2, #15
+ 2735 0090 90309FE5 		ldr	r3, .L5+16
+ 2736 0094 FEFFFFEB 		bl	lcd_printf
+ 2737              	.L4:
+ 2738              	.LBB2:
+  42:../main.c     **** 
+  43:../main.c     **** 	while (1) {
+  44:../main.c     **** 		// Intentar hacer un get string
+  45:../main.c     **** 		//mensajeRecibido = Uart_GetString();
+  46:../main.c     **** 		//char c = Uart_Getch();
+  47:../main.c     **** 		mensajeRecibido = Uart_GetString();
+ 2739              		.loc 1 47 0
+ 2740 0098 FEFFFFEB 		bl	Uart_GetString
+ 2741 009c 0030A0E1 		mov	r3, r0
+ 2742 00a0 14300BE5 		str	r3, [fp, #-20]
+  48:../main.c     **** 		int j = 0;
+ 2743              		.loc 1 48 0
+ 2744 00a4 0030A0E3 		mov	r3, #0
+ 2745 00a8 10300BE5 		str	r3, [fp, #-16]
+  49:../main.c     **** 		for(j = 0; j <= 60; j++){
+ 2746              		.loc 1 49 0
+ 2747 00ac 0030A0E3 		mov	r3, #0
+ 2748 00b0 10300BE5 		str	r3, [fp, #-16]
+ 2749 00b4 0C0000EA 		b	.L2
+ 2750              	.L3:
+  50:../main.c     **** 			c[j] = mensajeRecibido[j];
+ 2751              		.loc 1 50 0 discriminator 2
+ 2752 00b8 10301BE5 		ldr	r3, [fp, #-16]
+ 2753 00bc 14201BE5 		ldr	r2, [fp, #-20]
+ 2754 00c0 033082E0 		add	r3, r2, r3
+ 2755 00c4 0020D3E5 		ldrb	r2, [r3, #0]	@ zero_extendqisi2
+ 2756 00c8 4730E0E3 		mvn	r3, #71
+ 2757 00cc 10101BE5 		ldr	r1, [fp, #-16]
+ 2758 00d0 0C004BE2 		sub	r0, fp, #12
+ 2759 00d4 011080E0 		add	r1, r0, r1
+ 2760 00d8 033081E0 		add	r3, r1, r3
+ 2761 00dc 0020C3E5 		strb	r2, [r3, #0]
+  49:../main.c     **** 		for(j = 0; j <= 60; j++){
+ 2762              		.loc 1 49 0 discriminator 2
+ 2763 00e0 10301BE5 		ldr	r3, [fp, #-16]
+ 2764 00e4 013083E2 		add	r3, r3, #1
+ 2765 00e8 10300BE5 		str	r3, [fp, #-16]
+ 2766              	.L2:
+  49:../main.c     **** 		for(j = 0; j <= 60; j++){
+ 2767              		.loc 1 49 0 is_stmt 0 discriminator 1
+ 2768 00ec 10301BE5 		ldr	r3, [fp, #-16]
+ 2769 00f0 3C0053E3 		cmp	r3, #60
+ 2770 00f4 EFFFFFDA 		ble	.L3
+  51:../main.c     **** 		}
+  52:../main.c     **** 
+  53:../main.c     **** 		leds_switch();
+ 2771              		.loc 1 53 0 is_stmt 1
+ 2772 00f8 FEFFFFEB 		bl	leds_switch
+  54:../main.c     **** 
+  55:../main.c     **** 		// Limpiar la parte de abajo de la pantalla
+  56:../main.c     **** 		lcd_right_clear();
+ 2773              		.loc 1 56 0
+ 2774 00fc FEFFFFEB 		bl	lcd_right_clear
+  57:../main.c     **** 		//translateMsg(mensajeRecibido);
+  58:../main.c     **** 		translateMsg(c);
+ 2775              		.loc 1 58 0
+ 2776 0100 24309FE5 		ldr	r3, .L5+20
+ 2777 0104 54204BE2 		sub	r2, fp, #84
+ 2778 0108 0200A0E1 		mov	r0, r2
+ 2779 010c 0FE0A0E1 		mov	lr, pc
+ 2780 0110 13FF2FE1 		bx	r3
+ 2781              	.LBE2:
+  59:../main.c     **** 	}
+ 2782              		.loc 1 59 0
+ 2783 0114 DFFFFFEA 		b	.L4
+ 2784              	.L6:
+ 2785              		.align	2
+ 2786              	.L5:
+ 2787 0118 00000000 		.word	identifier
+ 2788 011c 00C20100 		.word	115200
+ 2789 0120 00000000 		.word	.LC0
+ 2790 0124 04000000 		.word	.LC1
+ 2791 0128 0C000000 		.word	.LC2
+ 2792 012c 00000000 		.word	translateMsg
+ 2793              		.cfi_endproc
+ 2794              	.LFE0:
+ 2796              		.section	.rodata
+ 2797 0012 0000     		.align	2
+ 2798              	.LC3:
+ 2799 0014 486F6C61 		.ascii	"Hola\000"
+ 2799      00
+ 2800 0019 000000   		.align	2
+ 2801              	.LC4:
+ 2802 001c 596F00   		.ascii	"Yo\000"
+ 2803 001f 00       		.align	2
+ 2804              	.LC5:
+ 2805 0020 6269656E 		.ascii	"bien\000"
+ 2805      00
+ 2806 0025 000000   		.align	2
+ 2807              	.LC6:
+ 2808 0028 736900   		.ascii	"si\000"
+ 2809 002b 00       		.align	2
+ 2810              	.LC7:
+ 2811 002c 6164696F 		.ascii	"adios\000"
+ 2811      7300
+ 2812 0032 0000     		.align	2
+ 2813              	.LC8:
+ 2814 0034 747500   		.ascii	"tu\000"
+ 2815 0037 00       		.align	2
+ 2816              	.LC9:
+ 2817 0038 6D616C00 		.ascii	"mal\000"
+ 2818              		.align	2
+ 2819              	.LC10:
+ 2820 003c 6E6F00   		.ascii	"no\000"
+ 2821 003f 00       		.align	2
+ 2822              	.LC11:
+ 2823 0040 6D756368 		.ascii	"mucho\000"
+ 2823      6F00
+ 2824 0046 0000     		.align	2
+ 2825              	.LC12:
+ 2826 0048 636F6D69 		.ascii	"comida\000"
+ 2826      646100
+ 2827 004f 00       		.align	2
+ 2828              	.LC13:
+ 2829 0050 2C00     		.ascii	",\000"
+ 2830 0052 0000     		.align	2
+ 2831              	.LC14:
+ 2832 0054 3F00     		.ascii	"?\000"
+ 2833 0056 0000     		.align	2
+ 2834              	.LC15:
+ 2835 0058 706F636F 		.ascii	"poco\000"
+ 2835      00
+ 2836 005d 000000   		.align	2
+ 2837              	.LC16:
+ 2838 0060 62656269 		.ascii	"bebida\000"
+ 2838      646100
+ 2839 0067 00       		.align	2
+ 2840              	.LC17:
+ 2841 0068 BF3F00   		.ascii	"\277?\000"
+ 2842 006b 00       		.align	2
+ 2843              	.LC18:
+ 2844 006c 257300   		.ascii	"%s\000"
+ 2845 006f 00       		.text
+ 2846              		.align	2
+ 2847              		.global	translateMsg
+ 2849              	translateMsg:
+ 2850              	.LFB1:
+  60:../main.c     **** }
+  61:../main.c     **** 
+  62:../main.c     **** void translateMsg(char* mensajeRecibido){
+ 2851              		.loc 1 62 0
+ 2852              		.cfi_startproc
+ 2853              		@ Function supports interworking.
+ 2854              		@ args = 0, pretend = 0, frame = 24
+ 2855              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2856 0130 0DC0A0E1 		mov	ip, sp
+ 2857              	.LCFI2:
+ 2858              		.cfi_def_cfa_register 12
+ 2859 0134 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+ 2860 0138 04B04CE2 		sub	fp, ip, #4
+ 2861              		.cfi_offset 14, -8
+ 2862              		.cfi_offset 13, -12
+ 2863              		.cfi_offset 11, -16
+ 2864              	.LCFI3:
+ 2865              		.cfi_def_cfa 11, 4
+ 2866 013c 20D04DE2 		sub	sp, sp, #32
+ 2867 0140 20000BE5 		str	r0, [fp, #-32]
+  63:../main.c     **** 
+  64:../main.c     **** 	int i = 0;
+ 2868              		.loc 1 64 0
+ 2869 0144 0030A0E3 		mov	r3, #0
+ 2870 0148 10300BE5 		str	r3, [fp, #-16]
+  65:../main.c     **** 	int aux=0;
+ 2871              		.loc 1 65 0
+ 2872 014c 0030A0E3 		mov	r3, #0
+ 2873 0150 14300BE5 		str	r3, [fp, #-20]
+  66:../main.c     **** 	char* msg = "";
+ 2874              		.loc 1 66 0
+ 2875 0154 E4329FE5 		ldr	r3, .L33
+ 2876 0158 18300BE5 		str	r3, [fp, #-24]
+  67:../main.c     **** 
+  68:../main.c     **** 	char letra;
+  69:../main.c     **** 
+  70:../main.c     **** 	while((mensajeRecibido[i] != 'P') ){
+ 2877              		.loc 1 70 0
+ 2878 015c AE0000EA 		b	.L8
+ 2879              	.L32:
+  71:../main.c     **** 		if (i%10==0 && i!=0)
+ 2880              		.loc 1 71 0
+ 2881 0160 10101BE5 		ldr	r1, [fp, #-16]
+ 2882 0164 D8329FE5 		ldr	r3, .L33+4
+ 2883 0168 9123C3E0 		smull	r2, r3, r1, r3
+ 2884 016c 4321A0E1 		mov	r2, r3, asr #2
+ 2885 0170 C13FA0E1 		mov	r3, r1, asr #31
+ 2886 0174 022063E0 		rsb	r2, r3, r2
+ 2887 0178 0230A0E1 		mov	r3, r2
+ 2888 017c 0331A0E1 		mov	r3, r3, asl #2
+ 2889 0180 023083E0 		add	r3, r3, r2
+ 2890 0184 8330A0E1 		mov	r3, r3, asl #1
+ 2891 0188 012063E0 		rsb	r2, r3, r1
+ 2892 018c 000052E3 		cmp	r2, #0
+ 2893 0190 0700001A 		bne	.L9
+ 2894              		.loc 1 71 0 is_stmt 0 discriminator 1
+ 2895 0194 10301BE5 		ldr	r3, [fp, #-16]
+ 2896 0198 000053E3 		cmp	r3, #0
+ 2897 019c 0400000A 		beq	.L9
+ 2898              	.LBB3:
+  72:../main.c     **** 		{
+  73:../main.c     **** 			DelayMs(3000);
+ 2899              		.loc 1 73 0 is_stmt 1
+ 2900 01a0 A0029FE5 		ldr	r0, .L33+8
+ 2901 01a4 FEFFFFEB 		bl	DelayMs
+  74:../main.c     **** 			aux=0;
+ 2902              		.loc 1 74 0
+ 2903 01a8 0030A0E3 		mov	r3, #0
+ 2904 01ac 14300BE5 		str	r3, [fp, #-20]
+  75:../main.c     **** 			lcd_right_clear();
+ 2905              		.loc 1 75 0
+ 2906 01b0 FEFFFFEB 		bl	lcd_right_clear
+ 2907              	.L9:
+ 2908              	.LBE3:
+  76:../main.c     **** 		}
+  77:../main.c     **** 		letra = mensajeRecibido[i];
+ 2909              		.loc 1 77 0
+ 2910 01b4 10301BE5 		ldr	r3, [fp, #-16]
+ 2911 01b8 20201BE5 		ldr	r2, [fp, #-32]
+ 2912 01bc 033082E0 		add	r3, r2, r3
+ 2913 01c0 0030D3E5 		ldrb	r3, [r3, #0]
+ 2914 01c4 19304BE5 		strb	r3, [fp, #-25]
+  78:../main.c     **** 		msg = "";
+ 2915              		.loc 1 78 0
+ 2916 01c8 70329FE5 		ldr	r3, .L33
+ 2917 01cc 18300BE5 		str	r3, [fp, #-24]
+  79:../main.c     **** 
+  80:../main.c     **** 		switch (mensajeRecibido[i]) {
+ 2918              		.loc 1 80 0
+ 2919 01d0 10301BE5 		ldr	r3, [fp, #-16]
+ 2920 01d4 20201BE5 		ldr	r2, [fp, #-32]
+ 2921 01d8 033082E0 		add	r3, r2, r3
+ 2922 01dc 0030D3E5 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 2923 01e0 303043E2 		sub	r3, r3, #48
+ 2924 01e4 350053E3 		cmp	r3, #53
+ 2925 01e8 03F19F97 		ldrls	pc, [pc, r3, asl #2]
+ 2926 01ec 710000EA 		b	.L10
+ 2927              	.L31:
+ 2928 01f0 C8020000 		.word	.L11
+ 2929 01f4 D4020000 		.word	.L12
+ 2930 01f8 E0020000 		.word	.L13
+ 2931 01fc EC020000 		.word	.L14
+ 2932 0200 F8020000 		.word	.L15
+ 2933 0204 04030000 		.word	.L16
+ 2934 0208 10030000 		.word	.L17
+ 2935 020c 1C030000 		.word	.L18
+ 2936 0210 28030000 		.word	.L19
+ 2937 0214 34030000 		.word	.L20
+ 2938 0218 B8030000 		.word	.L10
+ 2939 021c B8030000 		.word	.L10
+ 2940 0220 B8030000 		.word	.L10
+ 2941 0224 B8030000 		.word	.L10
+ 2942 0228 B8030000 		.word	.L10
+ 2943 022c B8030000 		.word	.L10
+ 2944 0230 B8030000 		.word	.L10
+ 2945 0234 40030000 		.word	.L21
+ 2946 0238 4C030000 		.word	.L22
+ 2947 023c 58030000 		.word	.L23
+ 2948 0240 64030000 		.word	.L24
+ 2949 0244 70030000 		.word	.L25
+ 2950 0248 B8030000 		.word	.L10
+ 2951 024c B8030000 		.word	.L10
+ 2952 0250 B8030000 		.word	.L10
+ 2953 0254 B8030000 		.word	.L10
+ 2954 0258 B8030000 		.word	.L10
+ 2955 025c B8030000 		.word	.L10
+ 2956 0260 B8030000 		.word	.L10
+ 2957 0264 B8030000 		.word	.L10
+ 2958 0268 B8030000 		.word	.L10
+ 2959 026c B8030000 		.word	.L10
+ 2960 0270 B8030000 		.word	.L10
+ 2961 0274 B8030000 		.word	.L10
+ 2962 0278 B8030000 		.word	.L10
+ 2963 027c B8030000 		.word	.L10
+ 2964 0280 B8030000 		.word	.L10
+ 2965 0284 B8030000 		.word	.L10
+ 2966 0288 B8030000 		.word	.L10
+ 2967 028c B8030000 		.word	.L10
+ 2968 0290 B8030000 		.word	.L10
+ 2969 0294 B8030000 		.word	.L10
+ 2970 0298 B8030000 		.word	.L10
+ 2971 029c B8030000 		.word	.L10
+ 2972 02a0 B8030000 		.word	.L10
+ 2973 02a4 B8030000 		.word	.L10
+ 2974 02a8 B8030000 		.word	.L10
+ 2975 02ac B8030000 		.word	.L10
+ 2976 02b0 B8030000 		.word	.L10
+ 2977 02b4 7C030000 		.word	.L26
+ 2978 02b8 88030000 		.word	.L27
+ 2979 02bc 94030000 		.word	.L28
+ 2980 02c0 A0030000 		.word	.L29
+ 2981 02c4 AC030000 		.word	.L30
+ 2982              	.L11:
+  81:../main.c     **** 			case '0':
+  82:../main.c     **** 				msg = "Hola";
+ 2983              		.loc 1 82 0
+ 2984 02c8 7C319FE5 		ldr	r3, .L33+12
+ 2985 02cc 18300BE5 		str	r3, [fp, #-24]
+  83:../main.c     **** 				break;
+ 2986              		.loc 1 83 0
+ 2987 02d0 380000EA 		b	.L10
+ 2988              	.L12:
+  84:../main.c     **** 			case '1':
+  85:../main.c     **** 				msg = "Yo";
+ 2989              		.loc 1 85 0
+ 2990 02d4 74319FE5 		ldr	r3, .L33+16
+ 2991 02d8 18300BE5 		str	r3, [fp, #-24]
+  86:../main.c     **** 				break;
+ 2992              		.loc 1 86 0
+ 2993 02dc 350000EA 		b	.L10
+ 2994              	.L13:
+  87:../main.c     **** 			case '2':
+  88:../main.c     **** 				msg = "bien";
+ 2995              		.loc 1 88 0
+ 2996 02e0 6C319FE5 		ldr	r3, .L33+20
+ 2997 02e4 18300BE5 		str	r3, [fp, #-24]
+  89:../main.c     **** 				break;
+ 2998              		.loc 1 89 0
+ 2999 02e8 320000EA 		b	.L10
+ 3000              	.L14:
+  90:../main.c     **** 			case '3':
+  91:../main.c     **** 				msg = "si";
+ 3001              		.loc 1 91 0
+ 3002 02ec 64319FE5 		ldr	r3, .L33+24
+ 3003 02f0 18300BE5 		str	r3, [fp, #-24]
+  92:../main.c     **** 				break;
+ 3004              		.loc 1 92 0
+ 3005 02f4 2F0000EA 		b	.L10
+ 3006              	.L15:
+  93:../main.c     **** 			case '4':
+  94:../main.c     **** 				msg = "adios";
+ 3007              		.loc 1 94 0
+ 3008 02f8 5C319FE5 		ldr	r3, .L33+28
+ 3009 02fc 18300BE5 		str	r3, [fp, #-24]
+  95:../main.c     **** 				break;
+ 3010              		.loc 1 95 0
+ 3011 0300 2C0000EA 		b	.L10
+ 3012              	.L16:
+  96:../main.c     **** 			case '5':
+  97:../main.c     **** 				msg = "tu";
+ 3013              		.loc 1 97 0
+ 3014 0304 54319FE5 		ldr	r3, .L33+32
+ 3015 0308 18300BE5 		str	r3, [fp, #-24]
+  98:../main.c     **** 				break;
+ 3016              		.loc 1 98 0
+ 3017 030c 290000EA 		b	.L10
+ 3018              	.L17:
+  99:../main.c     **** 			case '6':
+ 100:../main.c     **** 				msg = "mal";
+ 3019              		.loc 1 100 0
+ 3020 0310 4C319FE5 		ldr	r3, .L33+36
+ 3021 0314 18300BE5 		str	r3, [fp, #-24]
+ 101:../main.c     **** 				break;
+ 3022              		.loc 1 101 0
+ 3023 0318 260000EA 		b	.L10
+ 3024              	.L18:
+ 102:../main.c     **** 			case '7':
+ 103:../main.c     **** 				msg = "no";
+ 3025              		.loc 1 103 0
+ 3026 031c 44319FE5 		ldr	r3, .L33+40
+ 3027 0320 18300BE5 		str	r3, [fp, #-24]
+ 104:../main.c     **** 				break;
+ 3028              		.loc 1 104 0
+ 3029 0324 230000EA 		b	.L10
+ 3030              	.L19:
+ 105:../main.c     **** 			case '8':
+ 106:../main.c     **** 				msg = "mucho";
+ 3031              		.loc 1 106 0
+ 3032 0328 3C319FE5 		ldr	r3, .L33+44
+ 3033 032c 18300BE5 		str	r3, [fp, #-24]
+ 107:../main.c     **** 				break;
+ 3034              		.loc 1 107 0
+ 3035 0330 200000EA 		b	.L10
+ 3036              	.L20:
+ 108:../main.c     **** 			case '9':
+ 109:../main.c     **** 				msg = "comida";
+ 3037              		.loc 1 109 0
+ 3038 0334 34319FE5 		ldr	r3, .L33+48
+ 3039 0338 18300BE5 		str	r3, [fp, #-24]
+ 110:../main.c     **** 				break;
+ 3040              		.loc 1 110 0
+ 3041 033c 1D0000EA 		b	.L10
+ 3042              	.L21:
+ 111:../main.c     **** 			case 'A':
+ 112:../main.c     **** 				msg = ",";
+ 3043              		.loc 1 112 0
+ 3044 0340 2C319FE5 		ldr	r3, .L33+52
+ 3045 0344 18300BE5 		str	r3, [fp, #-24]
+ 113:../main.c     **** 				break;
+ 3046              		.loc 1 113 0
+ 3047 0348 1A0000EA 		b	.L10
+ 3048              	.L22:
+ 114:../main.c     **** 			case 'B':
+ 115:../main.c     **** 				msg = "?";
+ 3049              		.loc 1 115 0
+ 3050 034c 24319FE5 		ldr	r3, .L33+56
+ 3051 0350 18300BE5 		str	r3, [fp, #-24]
+ 116:../main.c     **** 				break;
+ 3052              		.loc 1 116 0
+ 3053 0354 170000EA 		b	.L10
+ 3054              	.L23:
+ 117:../main.c     **** 			case 'C':
+ 118:../main.c     **** 				msg = "poco";
+ 3055              		.loc 1 118 0
+ 3056 0358 1C319FE5 		ldr	r3, .L33+60
+ 3057 035c 18300BE5 		str	r3, [fp, #-24]
+ 119:../main.c     **** 				break;
+ 3058              		.loc 1 119 0
+ 3059 0360 140000EA 		b	.L10
+ 3060              	.L24:
+ 120:../main.c     **** 			case 'D':
+ 121:../main.c     **** 				msg = "bebida";
+ 3061              		.loc 1 121 0
+ 3062 0364 14319FE5 		ldr	r3, .L33+64
+ 3063 0368 18300BE5 		str	r3, [fp, #-24]
+ 122:../main.c     **** 				break;
+ 3064              		.loc 1 122 0
+ 3065 036c 110000EA 		b	.L10
+ 3066              	.L25:
+ 123:../main.c     **** 			case 'E':
+ 124:../main.c     **** 				msg = "¿?";
+ 3067              		.loc 1 124 0
+ 3068 0370 0C319FE5 		ldr	r3, .L33+68
+ 3069 0374 18300BE5 		str	r3, [fp, #-24]
+ 125:../main.c     **** 				break;
+ 3070              		.loc 1 125 0
+ 3071 0378 0E0000EA 		b	.L10
+ 3072              	.L26:
+ 126:../main.c     **** 			case 'a':
+ 127:../main.c     **** 				msg = ",";
+ 3073              		.loc 1 127 0
+ 3074 037c F0309FE5 		ldr	r3, .L33+52
+ 3075 0380 18300BE5 		str	r3, [fp, #-24]
+ 128:../main.c     **** 				break;
+ 3076              		.loc 1 128 0
+ 3077 0384 0B0000EA 		b	.L10
+ 3078              	.L27:
+ 129:../main.c     **** 			case 'b':
+ 130:../main.c     **** 				msg = "?";
+ 3079              		.loc 1 130 0
+ 3080 0388 E8309FE5 		ldr	r3, .L33+56
+ 3081 038c 18300BE5 		str	r3, [fp, #-24]
+ 131:../main.c     **** 				break;
+ 3082              		.loc 1 131 0
+ 3083 0390 080000EA 		b	.L10
+ 3084              	.L28:
+ 132:../main.c     **** 			case 'c':
+ 133:../main.c     **** 				msg = "poco";
+ 3085              		.loc 1 133 0
+ 3086 0394 E0309FE5 		ldr	r3, .L33+60
+ 3087 0398 18300BE5 		str	r3, [fp, #-24]
+ 134:../main.c     **** 				break;
+ 3088              		.loc 1 134 0
+ 3089 039c 050000EA 		b	.L10
+ 3090              	.L29:
+ 135:../main.c     **** 			case 'd':
+ 136:../main.c     **** 				msg = "bebida";
+ 3091              		.loc 1 136 0
+ 3092 03a0 D8309FE5 		ldr	r3, .L33+64
+ 3093 03a4 18300BE5 		str	r3, [fp, #-24]
+ 137:../main.c     **** 				break;
+ 3094              		.loc 1 137 0
+ 3095 03a8 020000EA 		b	.L10
+ 3096              	.L30:
+ 138:../main.c     **** 			case 'e':
+ 139:../main.c     **** 				msg = "¿?";
+ 3097              		.loc 1 139 0
+ 3098 03ac D0309FE5 		ldr	r3, .L33+68
+ 3099 03b0 18300BE5 		str	r3, [fp, #-24]
+ 140:../main.c     **** 				break;
+ 3100              		.loc 1 140 0
+ 3101 03b4 0000A0E1 		mov	r0, r0	@ nop
+ 3102              	.L10:
+ 141:../main.c     **** 
+ 142:../main.c     **** 			}
+ 143:../main.c     **** 
+ 144:../main.c     **** 			// Nose porque ha pintado algo raruno
+ 145:../main.c     **** 			lcd_printf(174, 40 + aux * 20, BLACK, "%s", msg);
+ 3103              		.loc 1 145 0
+ 3104 03b8 14301BE5 		ldr	r3, [fp, #-20]
+ 3105 03bc 0338A0E1 		mov	r3, r3, asl #16
+ 3106 03c0 2338A0E1 		mov	r3, r3, lsr #16
+ 3107 03c4 0320A0E1 		mov	r2, r3	@ movhi
+ 3108 03c8 0221A0E1 		mov	r2, r2, asl #2
+ 3109 03cc 033082E0 		add	r3, r2, r3
+ 3110 03d0 0331A0E1 		mov	r3, r3, asl #2
+ 3111 03d4 0338A0E1 		mov	r3, r3, asl #16
+ 3112 03d8 2338A0E1 		mov	r3, r3, lsr #16
+ 3113 03dc 283083E2 		add	r3, r3, #40
+ 3114 03e0 0338A0E1 		mov	r3, r3, asl #16
+ 3115 03e4 2338A0E1 		mov	r3, r3, lsr #16
+ 3116 03e8 18201BE5 		ldr	r2, [fp, #-24]
+ 3117 03ec 00208DE5 		str	r2, [sp, #0]
+ 3118 03f0 AE00A0E3 		mov	r0, #174
+ 3119 03f4 0310A0E1 		mov	r1, r3
+ 3120 03f8 0F20A0E3 		mov	r2, #15
+ 3121 03fc 84309FE5 		ldr	r3, .L33+72
+ 3122 0400 FEFFFFEB 		bl	lcd_printf
+ 146:../main.c     **** 		i += 1;
+ 3123              		.loc 1 146 0
+ 3124 0404 10301BE5 		ldr	r3, [fp, #-16]
+ 3125 0408 013083E2 		add	r3, r3, #1
+ 3126 040c 10300BE5 		str	r3, [fp, #-16]
+ 147:../main.c     **** 		aux+=1;
+ 3127              		.loc 1 147 0
+ 3128 0410 14301BE5 		ldr	r3, [fp, #-20]
+ 3129 0414 013083E2 		add	r3, r3, #1
+ 3130 0418 14300BE5 		str	r3, [fp, #-20]
+ 3131              	.L8:
+  70:../main.c     **** 	while((mensajeRecibido[i] != 'P') ){
+ 3132              		.loc 1 70 0 discriminator 1
+ 3133 041c 10301BE5 		ldr	r3, [fp, #-16]
+ 3134 0420 20201BE5 		ldr	r2, [fp, #-32]
+ 3135 0424 033082E0 		add	r3, r2, r3
+ 3136 0428 0030D3E5 		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 3137 042c 500053E3 		cmp	r3, #80
+ 3138 0430 4AFFFF1A 		bne	.L32
+ 148:../main.c     **** 	}
+ 149:../main.c     **** }
+ 3139              		.loc 1 149 0
+ 3140 0434 0CD04BE2 		sub	sp, fp, #12
+ 3141 0438 00689DE8 		ldmfd	sp, {fp, sp, lr}
+ 3142 043c 1EFF2FE1 		bx	lr
+ 3143              	.L34:
+ 3144              		.align	2
+ 3145              	.L33:
+ 3146 0440 00000000 		.word	.LC0
+ 3147 0444 67666666 		.word	1717986919
+ 3148 0448 B80B0000 		.word	3000
+ 3149 044c 14000000 		.word	.LC3
+ 3150 0450 1C000000 		.word	.LC4
+ 3151 0454 20000000 		.word	.LC5
+ 3152 0458 28000000 		.word	.LC6
+ 3153 045c 2C000000 		.word	.LC7
+ 3154 0460 34000000 		.word	.LC8
+ 3155 0464 38000000 		.word	.LC9
+ 3156 0468 3C000000 		.word	.LC10
+ 3157 046c 40000000 		.word	.LC11
+ 3158 0470 48000000 		.word	.LC12
+ 3159 0474 50000000 		.word	.LC13
+ 3160 0478 54000000 		.word	.LC14
+ 3161 047c 58000000 		.word	.LC15
+ 3162 0480 60000000 		.word	.LC16
+ 3163 0484 68000000 		.word	.LC17
+ 3164 0488 6C000000 		.word	.LC18
+ 3165              		.cfi_endproc
+ 3166              	.LFE1:
+ 3168              	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\USUARI~1\AppData\Local\Temp\ccXdsTVc.s:2658   .rodata:00000000 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccXdsTVc.s:2668   .text:00000000 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccXdsTVc.s:2671   .text:00000000 main
+C:\Users\USUARI~1\AppData\Local\Temp\ccXdsTVc.s:2787   .text:00000118 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccXdsTVc.s:2849   .text:00000130 translateMsg
+C:\Users\USUARI~1\AppData\Local\Temp\ccXdsTVc.s:2846   .text:00000130 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccXdsTVc.s:2928   .text:000001f0 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccXdsTVc.s:2984   .text:000002c8 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccXdsTVc.s:3146   .text:00000440 $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+sys_init
+Eint4567_init
+lcd_init
+keyboard_init
+Uart_Init
+Uart_Config
+D8Led_symbol
+lcd_on
+lcd_draw_vline
+lcd_printf
+Uart_GetString
+leds_switch
+lcd_right_clear
+identifier
+DelayMs

@@ -1,0 +1,196 @@
+   1              		.cpu arm7tdmi
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 4
+  10              		.eabi_attribute 18, 4
+  11              		.file	"uart.c"
+  12              		.global	__aeabi_i2d
+  13              		.global	__aeabi_ddiv
+  14              		.global	__aeabi_dadd
+  15              		.global	__aeabi_d2iz
+  16              		.text
+  17              		.align	2
+  18              		.global	Uart_Init
+  20              	Uart_Init:
+  21              		@ Function supports interworking.
+  22              		@ args = 0, pretend = 0, frame = 0
+  23              		@ frame_needed = 1, uses_anonymous_args = 0
+  24 0000 0DC0A0E1 		mov	ip, sp
+  25 0004 78D82DE9 		stmfd	sp!, {r3, r4, r5, r6, fp, ip, lr, pc}
+  26 0008 70509FE5 		ldr	r5, .L2
+  27 000c 1D46A0E3 		mov	r4, #30408704
+  28 0010 0360A0E3 		mov	r6, #3
+  29 0014 04B04CE2 		sub	fp, ip, #4
+  30 0018 006084E5 		str	r6, [r4, #0]
+  31 001c 045084E5 		str	r5, [r4, #4]
+  32 0020 FEFFFFEB 		bl	__aeabi_i2d
+  33 0024 0020A0E1 		mov	r2, r0
+  34 0028 0130A0E1 		mov	r3, r1
+  35 002c 0000A0E3 		mov	r0, #0
+  36 0030 4C109FE5 		ldr	r1, .L2+4
+  37 0034 FEFFFFEB 		bl	__aeabi_ddiv
+  38 0038 0020A0E3 		mov	r2, #0
+  39 003c 44309FE5 		ldr	r3, .L2+8
+  40 0040 FEFFFFEB 		bl	__aeabi_dadd
+  41 0044 FEFFFFEB 		bl	__aeabi_d2iz
+  42 0048 3C309FE5 		ldr	r3, .L2+12
+  43 004c 0020A0E3 		mov	r2, #0
+  44 0050 010040E2 		sub	r0, r0, #1
+  45 0054 280084E5 		str	r0, [r4, #40]
+  46 0058 082084E5 		str	r2, [r4, #8]
+  47 005c 0C2084E5 		str	r2, [r4, #12]
+  48 0060 006083E5 		str	r6, [r3, #0]
+  49 0064 045083E5 		str	r5, [r3, #4]
+  50 0068 280083E5 		str	r0, [r3, #40]
+  51 006c 082083E5 		str	r2, [r3, #8]
+  52 0070 0C2083E5 		str	r2, [r3, #12]
+  53 0074 1CD04BE2 		sub	sp, fp, #28
+  54 0078 78689DE8 		ldmfd	sp, {r3, r4, r5, r6, fp, sp, lr}
+  55 007c 1EFF2FE1 		bx	lr
+  56              	.L3:
+  57              		.align	2
+  58              	.L2:
+  59 0080 05020000 		.word	517
+  60 0084 80844E41 		.word	1095664768
+  61 0088 0000E03F 		.word	1071644672
+  62 008c 0040D001 		.word	30425088
+  64              		.align	2
+  65              		.global	Uart_Config
+  67              	Uart_Config:
+  68              		@ Function supports interworking.
+  69              		@ args = 0, pretend = 0, frame = 0
+  70              		@ frame_needed = 0, uses_anonymous_args = 0
+  71              		@ link register save eliminated.
+  72 0090 1EFF2FE1 		bx	lr
+  74              		.align	2
+  75              		.global	Uart_TxEmpty
+  77              	Uart_TxEmpty:
+  78              		@ Function supports interworking.
+  79              		@ args = 0, pretend = 0, frame = 0
+  80              		@ frame_needed = 0, uses_anonymous_args = 0
+  81              		@ link register save eliminated.
+  82              	.L6:
+  83 0094 1D36A0E3 		mov	r3, #30408704
+  84 0098 103093E5 		ldr	r3, [r3, #16]
+  85 009c 040013E3 		tst	r3, #4
+  86 00a0 FBFFFF0A 		beq	.L6
+  87 00a4 1EFF2FE1 		bx	lr
+  89              		.align	2
+  90              		.global	Uart_Getch
+  92              	Uart_Getch:
+  93              		@ Function supports interworking.
+  94              		@ args = 0, pretend = 0, frame = 0
+  95              		@ frame_needed = 0, uses_anonymous_args = 0
+  96              		@ link register save eliminated.
+  97              	.L8:
+  98 00a8 1D36A0E3 		mov	r3, #30408704
+  99 00ac 102093E5 		ldr	r2, [r3, #16]
+ 100 00b0 010012E3 		tst	r2, #1
+ 101 00b4 FBFFFF0A 		beq	.L8
+ 102 00b8 2400D3E5 		ldrb	r0, [r3, #36]	@ zero_extendqisi2
+ 103 00bc 1EFF2FE1 		bx	lr
+ 105              		.align	2
+ 106              		.global	Uart_GetInt
+ 108              	Uart_GetInt:
+ 109              		@ Function supports interworking.
+ 110              		@ args = 0, pretend = 0, frame = 0
+ 111              		@ frame_needed = 0, uses_anonymous_args = 0
+ 112              		@ link register save eliminated.
+ 113              	.L10:
+ 114 00c0 1D36A0E3 		mov	r3, #30408704
+ 115 00c4 102093E5 		ldr	r2, [r3, #16]
+ 116 00c8 010012E3 		tst	r2, #1
+ 117 00cc FBFFFF0A 		beq	.L10
+ 118 00d0 2400D3E5 		ldrb	r0, [r3, #36]	@ zero_extendqisi2
+ 119 00d4 300040E2 		sub	r0, r0, #48
+ 120 00d8 1EFF2FE1 		bx	lr
+ 122              		.align	2
+ 123              		.global	Uart_SendByte
+ 125              	Uart_SendByte:
+ 126              		@ Function supports interworking.
+ 127              		@ args = 0, pretend = 0, frame = 0
+ 128              		@ frame_needed = 0, uses_anonymous_args = 0
+ 129              		@ link register save eliminated.
+ 130 00dc 0A0050E3 		cmp	r0, #10
+ 131 00e0 0500001A 		bne	.L14
+ 132              	.L13:
+ 133 00e4 1D36A0E3 		mov	r3, #30408704
+ 134 00e8 102093E5 		ldr	r2, [r3, #16]
+ 135 00ec 020012E3 		tst	r2, #2
+ 136 00f0 FBFFFF0A 		beq	.L13
+ 137 00f4 0D20A0E3 		mov	r2, #13
+ 138 00f8 2020C3E5 		strb	r2, [r3, #32]
+ 139              	.L14:
+ 140 00fc 1D36A0E3 		mov	r3, #30408704
+ 141 0100 102093E5 		ldr	r2, [r3, #16]
+ 142 0104 020012E3 		tst	r2, #2
+ 143 0108 FBFFFF0A 		beq	.L14
+ 144 010c 2000C3E5 		strb	r0, [r3, #32]
+ 145 0110 1EFF2FE1 		bx	lr
+ 147              		.align	2
+ 148              		.global	Uart_SendString
+ 150              	Uart_SendString:
+ 151              		@ Function supports interworking.
+ 152              		@ args = 0, pretend = 0, frame = 0
+ 153              		@ frame_needed = 1, uses_anonymous_args = 0
+ 154 0114 0DC0A0E1 		mov	ip, sp
+ 155 0118 18D82DE9 		stmfd	sp!, {r3, r4, fp, ip, lr, pc}
+ 156 011c 04B04CE2 		sub	fp, ip, #4
+ 157 0120 0040A0E1 		mov	r4, r0
+ 158 0124 000000EA 		b	.L16
+ 159              	.L17:
+ 160 0128 FEFFFFEB 		bl	Uart_SendByte
+ 161              	.L16:
+ 162 012c 0100D4E4 		ldrb	r0, [r4], #1	@ zero_extendqisi2
+ 163 0130 000050E3 		cmp	r0, #0
+ 164 0134 FBFFFF1A 		bne	.L17
+ 165 0138 14D04BE2 		sub	sp, fp, #20
+ 166 013c 18689DE8 		ldmfd	sp, {r3, r4, fp, sp, lr}
+ 167 0140 1EFF2FE1 		bx	lr
+ 169              		.align	2
+ 170              		.global	Uart_Printf
+ 172              	Uart_Printf:
+ 173              		@ Function supports interworking.
+ 174              		@ args = 4, pretend = 16, frame = 264
+ 175              		@ frame_needed = 1, uses_anonymous_args = 1
+ 176 0144 0DC0A0E1 		mov	ip, sp
+ 177 0148 0F002DE9 		stmfd	sp!, {r0, r1, r2, r3}
+ 178 014c 00D82DE9 		stmfd	sp!, {fp, ip, lr, pc}
+ 179 0150 14B04CE2 		sub	fp, ip, #20
+ 180 0154 42DF4DE2 		sub	sp, sp, #264
+ 181 0158 08208BE2 		add	r2, fp, #8
+ 182 015c 110E4BE2 		sub	r0, fp, #272
+ 183 0160 04109BE5 		ldr	r1, [fp, #4]
+ 184 0164 10200BE5 		str	r2, [fp, #-16]
+ 185 0168 FEFFFFEB 		bl	vsprintf
+ 186 016c 110E4BE2 		sub	r0, fp, #272
+ 187 0170 FEFFFFEB 		bl	Uart_SendString
+ 188 0174 0CD04BE2 		sub	sp, fp, #12
+ 189 0178 00689DE8 		ldmfd	sp, {fp, sp, lr}
+ 190 017c 1EFF2FE1 		bx	lr
+ 192              		.ident	"GCC: (Sourcery G++ Lite 2011.03-42) 4.5.2"
+DEFINED SYMBOLS
+                            *ABS*:00000000 uart.c
+C:\Users\USUARI~1\AppData\Local\Temp\ccYewQe7.s:17     .text:00000000 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccYewQe7.s:20     .text:00000000 Uart_Init
+C:\Users\USUARI~1\AppData\Local\Temp\ccYewQe7.s:59     .text:00000080 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccYewQe7.s:64     .text:00000090 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccYewQe7.s:67     .text:00000090 Uart_Config
+C:\Users\USUARI~1\AppData\Local\Temp\ccYewQe7.s:77     .text:00000094 Uart_TxEmpty
+C:\Users\USUARI~1\AppData\Local\Temp\ccYewQe7.s:92     .text:000000a8 Uart_Getch
+C:\Users\USUARI~1\AppData\Local\Temp\ccYewQe7.s:108    .text:000000c0 Uart_GetInt
+C:\Users\USUARI~1\AppData\Local\Temp\ccYewQe7.s:125    .text:000000dc Uart_SendByte
+C:\Users\USUARI~1\AppData\Local\Temp\ccYewQe7.s:150    .text:00000114 Uart_SendString
+C:\Users\USUARI~1\AppData\Local\Temp\ccYewQe7.s:172    .text:00000144 Uart_Printf
+
+UNDEFINED SYMBOLS
+__aeabi_i2d
+__aeabi_ddiv
+__aeabi_dadd
+__aeabi_d2iz
+vsprintf

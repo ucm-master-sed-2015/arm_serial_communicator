@@ -1,0 +1,453 @@
+   1              		.cpu arm7tdmi
+   2              		.fpu softvfp
+   3              		.eabi_attribute 20, 1
+   4              		.eabi_attribute 21, 1
+   5              		.eabi_attribute 23, 3
+   6              		.eabi_attribute 24, 1
+   7              		.eabi_attribute 25, 1
+   8              		.eabi_attribute 26, 1
+   9              		.eabi_attribute 30, 4
+  10              		.eabi_attribute 18, 4
+  11              		.file	"main.c"
+  12              		.text
+  13              		.align	2
+  14              		.global	cogeCarta
+  16              	cogeCarta:
+  17              		@ Function supports interworking.
+  18              		@ args = 0, pretend = 0, frame = 0
+  19              		@ frame_needed = 0, uses_anonymous_args = 0
+  20              		@ link register save eliminated.
+  21 0000 1C309FE5 		ldr	r3, .L3
+  22 0004 000093E5 		ldr	r0, [r3, #0]
+  23 0008 1E0110E2 		ands	r0, r0, #-2147483641
+  24 000c 01004042 		submi	r0, r0, #1
+  25 0010 800EE041 		mvnmi	r0, r0, asl #29
+  26 0014 A00EE041 		mvnmi	r0, r0, lsr #29
+  27 0018 01008042 		addmi	r0, r0, #1
+  28 001c 010080E2 		add	r0, r0, #1
+  29 0020 1EFF2FE1 		bx	lr
+  30              	.L4:
+  31              		.align	2
+  32              	.L3:
+  33 0024 00000000 		.word	cartas
+  35              		.align	2
+  36              		.global	numeroTrio
+  38              	numeroTrio:
+  39              		@ Function supports interworking.
+  40              		@ args = 0, pretend = 0, frame = 0
+  41              		@ frame_needed = 0, uses_anonymous_args = 0
+  42              		@ link register save eliminated.
+  43 0028 020050E1 		cmp	r0, r2
+  44 002c 01005001 		cmpeq	r0, r1
+  45 0030 0020A013 		movne	r2, #0
+  46 0034 0120A003 		moveq	r2, #1
+  47 0038 0200A011 		movne	r0, r2
+  48 003c 1EFF2FE1 		bx	lr
+  50              		.align	2
+  51              		.global	numeroPareja
+  53              	numeroPareja:
+  54              		@ Function supports interworking.
+  55              		@ args = 0, pretend = 0, frame = 0
+  56              		@ frame_needed = 0, uses_anonymous_args = 0
+  57              		@ link register save eliminated.
+  58 0040 010050E1 		cmp	r0, r1
+  59 0044 1EFF2F01 		bxeq	lr
+  60 0048 020051E1 		cmp	r1, r2
+  61 004c 0300000A 		beq	.L10
+  62 0050 020050E1 		cmp	r0, r2
+  63 0054 0200A001 		moveq	r0, r2
+  64 0058 0000A013 		movne	r0, #0
+  65 005c 1EFF2FE1 		bx	lr
+  66              	.L10:
+  67 0060 0100A0E1 		mov	r0, r1
+  68 0064 1EFF2FE1 		bx	lr
+  70              		.align	2
+  71              		.global	cartaMasAlta
+  73              	cartaMasAlta:
+  74              		@ Function supports interworking.
+  75              		@ args = 0, pretend = 0, frame = 0
+  76              		@ frame_needed = 0, uses_anonymous_args = 0
+  77              		@ link register save eliminated.
+  78 0068 020050E1 		cmp	r0, r2
+  79 006c 010050C1 		cmpgt	r0, r1
+  80 0070 1EFF2FC1 		bxgt	lr
+  81 0074 010052E1 		cmp	r2, r1
+  82 0078 0200A0A1 		movge	r0, r2
+  83 007c 0100A0B1 		movlt	r0, r1
+  84 0080 1EFF2FE1 		bx	lr
+  86              		.align	2
+  87              		.global	ganasOPierdes
+  89              	ganasOPierdes:
+  90              		@ Function supports interworking.
+  91              		@ args = 0, pretend = 0, frame = 8
+  92              		@ frame_needed = 1, uses_anonymous_args = 0
+  93 0084 0DC0A0E1 		mov	ip, sp
+  94 0088 F0DF2DE9 		stmfd	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, ip, lr, pc}
+  95 008c 10419FE5 		ldr	r4, .L26
+  96 0090 04B04CE2 		sub	fp, ip, #4
+  97 0094 0CD04DE2 		sub	sp, sp, #12
+  98 0098 007094E5 		ldr	r7, [r4, #0]
+  99 009c 046094E5 		ldr	r6, [r4, #4]
+ 100 00a0 085094E5 		ldr	r5, [r4, #8]
+ 101 00a4 0610A0E1 		mov	r1, r6
+ 102 00a8 0520A0E1 		mov	r2, r5
+ 103 00ac 0700A0E1 		mov	r0, r7
+ 104 00b0 FEFFFFEB 		bl	numeroTrio
+ 105 00b4 143094E5 		ldr	r3, [r4, #20]
+ 106 00b8 0CA094E5 		ldr	sl, [r4, #12]
+ 107 00bc 109094E5 		ldr	r9, [r4, #16]
+ 108 00c0 0080A0E1 		mov	r8, r0
+ 109 00c4 0910A0E1 		mov	r1, r9
+ 110 00c8 0A00A0E1 		mov	r0, sl
+ 111 00cc 0320A0E1 		mov	r2, r3
+ 112 00d0 30300BE5 		str	r3, [fp, #-48]
+ 113 00d4 FEFFFFEB 		bl	numeroTrio
+ 114 00d8 000058E1 		cmp	r8, r0
+ 115 00dc 1B0000CA 		bgt	.L24
+ 116              	.L14:
+ 117 00e0 220000BA 		blt	.L25
+ 118              	.L16:
+ 119 00e4 000058E3 		cmp	r8, #0
+ 120 00e8 280000CA 		bgt	.L22
+ 121              	.L17:
+ 122 00ec 0610A0E1 		mov	r1, r6
+ 123 00f0 0520A0E1 		mov	r2, r5
+ 124 00f4 0700A0E1 		mov	r0, r7
+ 125 00f8 FEFFFFEB 		bl	numeroPareja
+ 126 00fc 0910A0E1 		mov	r1, r9
+ 127 0100 0080A0E1 		mov	r8, r0
+ 128 0104 30201BE5 		ldr	r2, [fp, #-48]
+ 129 0108 0A00A0E1 		mov	r0, sl
+ 130 010c FEFFFFEB 		bl	numeroPareja
+ 131 0110 000058E1 		cmp	r8, r0
+ 132 0114 0D0000CA 		bgt	.L24
+ 133              	.L18:
+ 134 0118 140000BA 		blt	.L25
+ 135              	.L19:
+ 136 011c 000058E3 		cmp	r8, #0
+ 137 0120 1A0000CA 		bgt	.L22
+ 138              	.L20:
+ 139 0124 0520A0E1 		mov	r2, r5
+ 140 0128 0610A0E1 		mov	r1, r6
+ 141 012c 0700A0E1 		mov	r0, r7
+ 142 0130 FEFFFFEB 		bl	cartaMasAlta
+ 143 0134 0910A0E1 		mov	r1, r9
+ 144 0138 0050A0E1 		mov	r5, r0
+ 145 013c 30201BE5 		ldr	r2, [fp, #-48]
+ 146 0140 0A00A0E1 		mov	r0, sl
+ 147 0144 FEFFFFEB 		bl	cartaMasAlta
+ 148 0148 000055E1 		cmp	r5, r0
+ 149 014c 060000DA 		ble	.L21
+ 150              	.L24:
+ 151 0150 50009FE5 		ldr	r0, .L26+4
+ 152 0154 FEFFFFEB 		bl	Uart_Printf
+ 153 0158 4C309FE5 		ldr	r3, .L26+8
+ 154 015c 181094E5 		ldr	r1, [r4, #24]
+ 155 0160 002093E5 		ldr	r2, [r3, #0]
+ 156 0164 022081E0 		add	r2, r1, r2
+ 157 0168 060000EA 		b	.L23
+ 158              	.L21:
+ 159 016c 070000AA 		bge	.L22
+ 160              	.L25:
+ 161 0170 38009FE5 		ldr	r0, .L26+12
+ 162 0174 FEFFFFEB 		bl	Uart_Printf
+ 163 0178 2C309FE5 		ldr	r3, .L26+8
+ 164 017c 182094E5 		ldr	r2, [r4, #24]
+ 165 0180 001093E5 		ldr	r1, [r3, #0]
+ 166 0184 012062E0 		rsb	r2, r2, r1
+ 167              	.L23:
+ 168 0188 002083E5 		str	r2, [r3, #0]
+ 169 018c 010000EA 		b	.L13
+ 170              	.L22:
+ 171 0190 1C009FE5 		ldr	r0, .L26+16
+ 172 0194 FEFFFFEB 		bl	Uart_Printf
+ 173              	.L13:
+ 174 0198 28D04BE2 		sub	sp, fp, #40
+ 175 019c F06F9DE8 		ldmfd	sp, {r4, r5, r6, r7, r8, r9, sl, fp, sp, lr}
+ 176 01a0 1EFF2FE1 		bx	lr
+ 177              	.L27:
+ 178              		.align	2
+ 179              	.L26:
+ 180 01a4 00000000 		.word	.LANCHOR0
+ 181 01a8 00000000 		.word	.LANCHOR1
+ 182 01ac 00000000 		.word	.LANCHOR2
+ 183 01b0 19000000 		.word	.LANCHOR1+25
+ 184 01b4 34000000 		.word	.LANCHOR1+52
+ 186              		.align	2
+ 187              		.global	main
+ 189              	main:
+ 190              		@ Function supports interworking.
+ 191              		@ args = 0, pretend = 0, frame = 0
+ 192              		@ frame_needed = 1, uses_anonymous_args = 0
+ 193 01b8 0DC0A0E1 		mov	ip, sp
+ 194 01bc 78D82DE9 		stmfd	sp!, {r3, r4, r5, r6, fp, ip, lr, pc}
+ 195 01c0 04B04CE2 		sub	fp, ip, #4
+ 196 01c4 FEFFFFEB 		bl	sys_init
+ 197 01c8 FEFFFFEB 		bl	timer_init
+ 198 01cc FEFFFFEB 		bl	Eint4567_init
+ 199 01d0 44019FE5 		ldr	r0, .L33
+ 200 01d4 FEFFFFEB 		bl	Uart_Init
+ 201 01d8 FEFFFFEB 		bl	Uart_Config
+ 202              	.L32:
+ 203 01dc 3C019FE5 		ldr	r0, .L33+4
+ 204 01e0 FEFFFFEB 		bl	Uart_Printf
+ 205 01e4 FEFFFFEB 		bl	Uart_Getch
+ 206 01e8 34519FE5 		ldr	r5, .L33+8
+ 207 01ec 0000C5E5 		strb	r0, [r5, #0]
+ 208 01f0 FEFFFFEB 		bl	cogeCarta
+ 209 01f4 2C419FE5 		ldr	r4, .L33+12
+ 210 01f8 000084E5 		str	r0, [r4, #0]
+ 211 01fc 1C019FE5 		ldr	r0, .L33+4
+ 212 0200 FEFFFFEB 		bl	Uart_Printf
+ 213 0204 FEFFFFEB 		bl	Uart_Getch
+ 214 0208 0000C5E5 		strb	r0, [r5, #0]
+ 215 020c FEFFFFEB 		bl	cogeCarta
+ 216 0210 040084E5 		str	r0, [r4, #4]
+ 217 0214 04019FE5 		ldr	r0, .L33+4
+ 218 0218 FEFFFFEB 		bl	Uart_Printf
+ 219 021c FEFFFFEB 		bl	Uart_Getch
+ 220 0220 0000C5E5 		strb	r0, [r5, #0]
+ 221 0224 FEFFFFEB 		bl	cogeCarta
+ 222 0228 080084E5 		str	r0, [r4, #8]
+ 223 022c EC009FE5 		ldr	r0, .L33+4
+ 224 0230 FEFFFFEB 		bl	Uart_Printf
+ 225 0234 FEFFFFEB 		bl	Uart_Getch
+ 226 0238 0000C5E5 		strb	r0, [r5, #0]
+ 227 023c FEFFFFEB 		bl	cogeCarta
+ 228 0240 0C0084E5 		str	r0, [r4, #12]
+ 229 0244 D4009FE5 		ldr	r0, .L33+4
+ 230 0248 FEFFFFEB 		bl	Uart_Printf
+ 231 024c FEFFFFEB 		bl	Uart_Getch
+ 232 0250 0000C5E5 		strb	r0, [r5, #0]
+ 233 0254 FEFFFFEB 		bl	cogeCarta
+ 234 0258 100084E5 		str	r0, [r4, #16]
+ 235 025c BC009FE5 		ldr	r0, .L33+4
+ 236 0260 FEFFFFEB 		bl	Uart_Printf
+ 237 0264 FEFFFFEB 		bl	Uart_Getch
+ 238 0268 0000C5E5 		strb	r0, [r5, #0]
+ 239 026c FEFFFFEB 		bl	cogeCarta
+ 240 0270 B4609FE5 		ldr	r6, .L33+16
+ 241 0274 0C0094E9 		ldmib	r4, {r2, r3}	@ phole ldm
+ 242 0278 140084E5 		str	r0, [r4, #20]
+ 243 027c 001094E5 		ldr	r1, [r4, #0]
+ 244 0280 A8009FE5 		ldr	r0, .L33+20
+ 245 0284 FEFFFFEB 		bl	Uart_Printf
+ 246 0288 001096E5 		ldr	r1, [r6, #0]
+ 247 028c A0009FE5 		ldr	r0, .L33+24
+ 248 0290 FEFFFFEB 		bl	Uart_Printf
+ 249 0294 FEFFFFEB 		bl	Uart_Getch
+ 250 0298 0000C5E5 		strb	r0, [r5, #0]
+ 251 029c FEFFFFEB 		bl	Uart_SendByte
+ 252 02a0 0030D5E5 		ldrb	r3, [r5, #0]	@ zero_extendqisi2
+ 253 02a4 730053E3 		cmp	r3, #115
+ 254 02a8 53005313 		cmpne	r3, #83
+ 255 02ac 1000001A 		bne	.L29
+ 256 02b0 80009FE5 		ldr	r0, .L33+28
+ 257 02b4 FEFFFFEB 		bl	Uart_Printf
+ 258 02b8 FEFFFFEB 		bl	Uart_GetInt
+ 259 02bc 180084E5 		str	r0, [r4, #24]
+ 260 02c0 FEFFFFEB 		bl	Uart_SendByte
+ 261 02c4 181094E5 		ldr	r1, [r4, #24]
+ 262 02c8 6C009FE5 		ldr	r0, .L33+32
+ 263 02cc FEFFFFEB 		bl	Uart_Printf
+ 264 02d0 001096E5 		ldr	r1, [r6, #0]
+ 265 02d4 183094E5 		ldr	r3, [r4, #24]
+ 266 02d8 010053E1 		cmp	r3, r1
+ 267 02dc 010000CA 		bgt	.L30
+ 268 02e0 FEFFFFEB 		bl	ganasOPierdes
+ 269 02e4 060000EA 		b	.L31
+ 270              	.L30:
+ 271 02e8 50009FE5 		ldr	r0, .L33+36
+ 272 02ec FEFFFFEB 		bl	Uart_Printf
+ 273 02f0 030000EA 		b	.L31
+ 274              	.L29:
+ 275 02f4 6E0053E3 		cmp	r3, #110
+ 276 02f8 4E005313 		cmpne	r3, #78
+ 277 02fc 40009F05 		ldreq	r0, .L33+40
+ 278 0300 FEFFFF0B 		bleq	Uart_Printf
+ 279              	.L31:
+ 280 0304 1C309FE5 		ldr	r3, .L33+12
+ 281 0308 38009FE5 		ldr	r0, .L33+44
+ 282 030c 0C1083E2 		add	r1, r3, #12
+ 283 0310 0E0091E8 		ldmia	r1, {r1, r2, r3}	@ phole ldm
+ 284 0314 FEFFFFEB 		bl	Uart_Printf
+ 285 0318 AFFFFFEA 		b	.L32
+ 286              	.L34:
+ 287              		.align	2
+ 288              	.L33:
+ 289 031c 00C20100 		.word	115200
+ 290 0320 50000000 		.word	.LANCHOR1+80
+ 291 0324 00000000 		.word	str
+ 292 0328 00000000 		.word	.LANCHOR0
+ 293 032c 00000000 		.word	.LANCHOR2
+ 294 0330 8D000000 		.word	.LANCHOR1+141
+ 295 0334 A8000000 		.word	.LANCHOR1+168
+ 296 0338 CC000000 		.word	.LANCHOR1+204
+ 297 033c E6000000 		.word	.LANCHOR1+230
+ 298 0340 FD000000 		.word	.LANCHOR1+253
+ 299 0344 4C010000 		.word	.LANCHOR1+332
+ 300 0348 59010000 		.word	.LANCHOR1+345
+ 302              		.global	str_send
+ 303              		.global	str_error
+ 304              		.global	puntuacion
+ 305              		.global	cartaUsuario1
+ 306              		.global	cartaUsuario2
+ 307              		.global	cartaUsuario3
+ 308              		.global	cartaARM1
+ 309              		.global	cartaARM2
+ 310              		.global	cartaARM3
+ 311              		.global	apuesta
+ 312              		.comm	str,256,1
+ 313              		.section	.rodata
+ 314              		.set	.LANCHOR1,. + 0
+ 315              	.LC0:
+ 316 0000 0A486173 		.ascii	"\012Has ganado la partida \000\000"
+ 316      2067616E 
+ 316      61646F20 
+ 316      6C612070 
+ 316      61727469 
+ 317              	.LC1:
+ 318 0019 0A204861 		.ascii	"\012 Has perdido la partida \000\000"
+ 318      73207065 
+ 318      72646964 
+ 318      6F206C61 
+ 318      20706172 
+ 319              	.LC2:
+ 320 0034 0A204861 		.ascii	"\012 Has empatado la partida \000\000"
+ 320      7320656D 
+ 320      70617461 
+ 320      646F206C 
+ 320      61207061 
+ 321              	.LC3:
+ 322 0050 0A50756C 		.ascii	"\012Pulse el boton izquierdo y cualquier tecla para"
+ 322      73652065 
+ 322      6C20626F 
+ 322      746F6E20 
+ 322      697A7175 
+ 323 0080 20636F6E 		.ascii	" continuar \000\000"
+ 323      74696E75 
+ 323      61722000 
+ 323      00
+ 324              	.LC4:
+ 325 008d 0A537520 		.ascii	"\012Su jugada es %d, %d, %d \000\000"
+ 325      6A756761 
+ 325      64612065 
+ 325      73202564 
+ 325      2C202564 
+ 326              	.LC5:
+ 327 00a8 0A546965 		.ascii	"\012Tienes %d euros, quieres apostar?\000\000"
+ 327      6E657320 
+ 327      25642065 
+ 327      75726F73 
+ 327      2C207175 
+ 328              	.LC6:
+ 329 00cc 0A437561 		.ascii	"\012Cuanto quieres apostar?\000\000"
+ 329      6E746F20 
+ 329      71756965 
+ 329      72657320 
+ 329      61706F73 
+ 330              	.LC7:
+ 331 00e6 0A547520 		.ascii	"\012Tu apuesta es de %d \000\000"
+ 331      61707565 
+ 331      73746120 
+ 331      65732064 
+ 331      65202564 
+ 332              	.LC8:
+ 333 00fd 0A4E6F20 		.ascii	"\012No puede apostar lo que no tiene, apueste una c"
+ 333      70756564 
+ 333      65206170 
+ 333      6F737461 
+ 333      72206C6F 
+ 334 012d 616E7469 		.ascii	"antidad igual o inferior a %d\000\000"
+ 334      64616420 
+ 334      69677561 
+ 334      6C206F20 
+ 334      696E6665 
+ 335              	.LC9:
+ 336 014c 0A436F62 		.ascii	"\012Cobarde...\000\000"
+ 336      61726465 
+ 336      2E2E2E00 
+ 336      00
+ 337              	.LC10:
+ 338 0159 0A4C6120 		.ascii	"\012La apuesta de su opnenente era %d, %d, %d \000\000"
+ 338      61707565 
+ 338      73746120 
+ 338      64652073 
+ 338      75206F70 
+ 339              		.data
+ 340              		.align	2
+ 341              		.set	.LANCHOR2,. + 0
+ 344              	puntuacion:
+ 345 0000 64000000 		.word	100
+ 348              	str_send:
+ 349 0004 0A4C4543 		.ascii	"\012LEC-ARM-P6 >\000\000"
+ 349      2D41524D 
+ 349      2D503620 
+ 349      3E0000
+ 350 0013 0000     		.space	2
+ 353              	str_error:
+ 354 0015 0A536520 		.ascii	"\012Se ha producido un desbordamiento!\012\000\000"
+ 354      68612070 
+ 354      726F6475 
+ 354      6369646F 
+ 354      20756E20 
+ 355 003b 00000000 		.space	12
+ 355      00000000 
+ 355      00000000 
+ 356 0047 00       		.bss
+ 357              		.align	2
+ 358              		.set	.LANCHOR0,. + 0
+ 361              	cartaUsuario1:
+ 362 0000 00000000 		.space	4
+ 365              	cartaUsuario2:
+ 366 0004 00000000 		.space	4
+ 369              	cartaUsuario3:
+ 370 0008 00000000 		.space	4
+ 373              	cartaARM1:
+ 374 000c 00000000 		.space	4
+ 377              	cartaARM2:
+ 378 0010 00000000 		.space	4
+ 381              	cartaARM3:
+ 382 0014 00000000 		.space	4
+ 385              	apuesta:
+ 386 0018 00000000 		.space	4
+ 387              		.ident	"GCC: (Sourcery G++ Lite 2011.03-42) 4.5.2"
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\USUARI~1\AppData\Local\Temp\ccG7wzpO.s:13     .text:00000000 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccG7wzpO.s:16     .text:00000000 cogeCarta
+C:\Users\USUARI~1\AppData\Local\Temp\ccG7wzpO.s:33     .text:00000024 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccG7wzpO.s:35     .text:00000028 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccG7wzpO.s:38     .text:00000028 numeroTrio
+C:\Users\USUARI~1\AppData\Local\Temp\ccG7wzpO.s:53     .text:00000040 numeroPareja
+C:\Users\USUARI~1\AppData\Local\Temp\ccG7wzpO.s:73     .text:00000068 cartaMasAlta
+C:\Users\USUARI~1\AppData\Local\Temp\ccG7wzpO.s:89     .text:00000084 ganasOPierdes
+C:\Users\USUARI~1\AppData\Local\Temp\ccG7wzpO.s:180    .text:000001a4 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccG7wzpO.s:186    .text:000001b8 $a
+C:\Users\USUARI~1\AppData\Local\Temp\ccG7wzpO.s:189    .text:000001b8 main
+C:\Users\USUARI~1\AppData\Local\Temp\ccG7wzpO.s:289    .text:0000031c $d
+                            *COM*:00000100 str
+C:\Users\USUARI~1\AppData\Local\Temp\ccG7wzpO.s:348    .data:00000004 str_send
+C:\Users\USUARI~1\AppData\Local\Temp\ccG7wzpO.s:353    .data:00000015 str_error
+C:\Users\USUARI~1\AppData\Local\Temp\ccG7wzpO.s:344    .data:00000000 puntuacion
+C:\Users\USUARI~1\AppData\Local\Temp\ccG7wzpO.s:361    .bss:00000000 cartaUsuario1
+C:\Users\USUARI~1\AppData\Local\Temp\ccG7wzpO.s:365    .bss:00000004 cartaUsuario2
+C:\Users\USUARI~1\AppData\Local\Temp\ccG7wzpO.s:369    .bss:00000008 cartaUsuario3
+C:\Users\USUARI~1\AppData\Local\Temp\ccG7wzpO.s:373    .bss:0000000c cartaARM1
+C:\Users\USUARI~1\AppData\Local\Temp\ccG7wzpO.s:377    .bss:00000010 cartaARM2
+C:\Users\USUARI~1\AppData\Local\Temp\ccG7wzpO.s:381    .bss:00000014 cartaARM3
+C:\Users\USUARI~1\AppData\Local\Temp\ccG7wzpO.s:385    .bss:00000018 apuesta
+C:\Users\USUARI~1\AppData\Local\Temp\ccG7wzpO.s:340    .data:00000000 $d
+C:\Users\USUARI~1\AppData\Local\Temp\ccG7wzpO.s:357    .bss:00000000 $d
+
+UNDEFINED SYMBOLS
+cartas
+Uart_Printf
+sys_init
+timer_init
+Eint4567_init
+Uart_Init
+Uart_Config
+Uart_Getch
+Uart_SendByte
+Uart_GetInt
